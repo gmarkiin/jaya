@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('payer_entity_type')->default('individual');
             $table->string('payer_type')->default('customer');
             $table->string('payer_email');
-            $table->string('payer_identification_type')->default('cpf');
+            $table->string('payer_identification_type');
             $table->string('payer_identification_number');
             $table->string('notification_url');
             $table->date('created_at');
