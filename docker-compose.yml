@@ -1,0 +1,52 @@
+version: '3.7'
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+
+services:
+
+  jaya_mysql:
+    image: mysql:5.7
+    container_name: jaya_mysql
+    networks:
+      - internal
+    volumes:
+      - .:/var/www/app
+      - mysql_data:/var/lib/mysql
+    working_dir: /var/www/app
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=database
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pass
+    ports:
+      - "3306:3306"
+
+  jaya_nginx:
+    image: webdevops/php-nginx:8.3
+    container_name: jaya_nginx
+    networks:
+      - internal
+    depends_on:
+      - jaya_mysql
+    links:
+      - jaya_mysql
+    volumes:
+      - .:/var/www/app
+    working_dir: /var/www/app
+    environment:
+      - WEB_DOCUMENT_ROOT=/var/www/app/public
+      - PHP_DATE_TIMEZONE=UTC
+      - PHP_DISPLAY_ERRORS=0
+      - WEB_DOCUMENT_INDEX=index.php
+    expose:
+      - 9090
+    ports:
+      - "8080:80"
