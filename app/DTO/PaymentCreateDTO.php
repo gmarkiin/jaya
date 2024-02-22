@@ -1,13 +1,16 @@
 <?php
 namespace App\DTO;
 
+use App\Enum\PaymentStatusEnum;
+use Carbon\Carbon;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 class PaymentCreateDTO
 {
-    public readonly array $requestData;
-    public readonly string $transactionAmount;
+    private readonly array $requestData;
+    public readonly float $transactionAmount;
     public readonly int $installments;
     public readonly string $token;
     public readonly string $paymentMethodId;
@@ -16,6 +19,9 @@ class PaymentCreateDTO
     public readonly string $payerIdentificationNumber;
     public readonly string $payerEntityType;
     public readonly string $payerType;
+    public readonly string $id;
+    public readonly string $status;
+    public readonly string $createdAt;
 
     private const TRANSACTION_AMOUNT_FIELD = 'transaction_amount';
     private const INSTALLMENTS_FIELD = 'installments';
@@ -98,5 +104,9 @@ class PaymentCreateDTO
         $this->payerIdentificationNumber = $payerIdentificationData[self::PAYER_IDENTIFICATION_NUMBER_FIELD];
         $this->payerEntityType = self::PAYER_ENTITY_TYPE;
         $this->payerType = self::PAYER_TYPE;
+
+        $this->id = Uuid::uuid4()->toString();
+        $this->status = PaymentStatusEnum::PENDING->value;
+        $this->createdAt = Carbon::now()->format('Y-m-d');
     }
 }

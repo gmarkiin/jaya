@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('payer_identification_number');
             $table->string('notification_url');
             $table->date('created_at');
-            $table->date('updated_at');
+            $table->date('updated_at')->nullable();
             $table->enum('status', ['pending', 'paid', 'canceled']);
         });
     }
