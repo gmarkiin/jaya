@@ -8,17 +8,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class IdVO
 {
-    public readonly mixed $value;
-
-    public function __construct(mixed $value)
+    public function __construct(public readonly mixed $value)
     {
-        $this->validateValue($value);
-        $this->value = $value;
+        $this->validateValue();
     }
 
-    private function validateValue(mixed $value): void
+    private function validateValue(): void
     {
-        if (!Uuid::isValid($value)) {
+        if (!Uuid::isValid($this->value)) {
             throw new HttpResponseException(
                 response()->json([
                     'message' => 'Invalid uuid',

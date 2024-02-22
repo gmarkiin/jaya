@@ -8,17 +8,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PaymentStatusVO
 {
-    public readonly mixed $value;
-
-    public function __construct(mixed $value)
+    public function __construct(public readonly mixed $value)
     {
-        $this->validateStatus($value);
-        $this->value = $value;
+        $this->validateStatus();
     }
 
-    private function validateStatus(mixed $value): void
+    private function validateStatus(): void
     {
-        if (!in_array($value, PaymentStatusEnum::availableStatus())) {
+        if (!in_array($this->value, PaymentStatusEnum::availableStatus())) {
             throw new HttpResponseException(
                 response()->json([
                     'message' => 'Invalid payment status',

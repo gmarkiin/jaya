@@ -7,17 +7,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class IntegerVO
 {
-    public readonly mixed $value;
-
-    public function __construct(mixed $value)
+    public function __construct(public readonly mixed $value)
     {
-        $this->validateValue($value);
-        $this->value = $value;
+        $this->validateValue();
     }
 
-    private function validateValue(mixed $value): void
+    private function validateValue(): void
     {
-        if (!is_int($value) || $value <= 0) {
+        if (!is_int($this->value) || $this->value <= 0) {
             $message = 'Invalid payment provided.The possible reasons are:' .
                 'A field of the provided payment was null or with invalid values';
 
