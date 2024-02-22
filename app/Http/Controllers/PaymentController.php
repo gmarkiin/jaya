@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Db\Payment\PaymentDb;
 use App\Domain\Payment\Payment;
 use App\DTO\PaymentCreateDTO;
+use App\Http\Requests\PaymentCreateRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
 class PaymentController extends BaseController
 {
-    public function create(Request $request): JsonResponse
+    public function create(PaymentCreateRequest $request): JsonResponse
     {
         $paymentCreateDto = new PaymentCreateDTO($request->toArray());
         $payment = new Payment(new PaymentDb());
