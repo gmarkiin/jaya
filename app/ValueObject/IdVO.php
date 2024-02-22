@@ -15,7 +15,7 @@ class IdVO
 
     private function validateValue(): void
     {
-        if (!Uuid::isValid($this->value)) {
+        if (!is_string($this->value) || !Uuid::isValid($this->value)) {
             throw new HttpResponseException(
                 response()->json([
                     'message' => 'Invalid uuid',
