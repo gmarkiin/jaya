@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain;
+namespace App\Domain\Payment;
 
 use App\Db\Payment\PaymentPersistenceInterface;
 use App\DTO\PaymentCreateDTO;

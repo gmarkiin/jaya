@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Db\Payment\PaymentDb;
-use App\Domain\Payment;
+use App\Domain\Payment\Payment;
 use App\DTO\PaymentCreateDTO;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;

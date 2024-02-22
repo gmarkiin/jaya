@@ -2,7 +2,7 @@
 
 namespace App\Db\Payment;
 
-use App\Domain\Payment;
+use App\Domain\Payment\Payment;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
