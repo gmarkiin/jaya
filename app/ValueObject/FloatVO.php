@@ -7,17 +7,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FloatVO
 {
-    public readonly mixed $amount;
+    public readonly mixed $value;
 
-    public function __construct(mixed $amount)
+    public function __construct(mixed $value)
     {
-        $this->validateAmount($amount);
-        $this->amount = $amount;
+        $this->validateAmount($value);
+        $this->value = $value;
     }
 
-    private function validateAmount(mixed $amount): void
+    private function validateAmount(mixed $value): void
     {
-        if (!is_float($amount) || $amount <= 0) {
+        if (!is_float($value) || $value <= 0) {
             $message = 'Invalid payment provided.The possible reasons are:' .
                 'A field of the provided payment was null or with invalid values';
 

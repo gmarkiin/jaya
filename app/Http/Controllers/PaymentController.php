@@ -18,8 +18,8 @@ class PaymentController extends BaseController
         $payment->create();
 
         return [
-            'id' => $payment->createDTO->id,
-            'created_at' => $payment->createDTO->createdAt
+            'id' => $payment->createDTO->id->value,
+            'created_at' => $payment->createDTO->createdAt->value
         ];
     }
 }
