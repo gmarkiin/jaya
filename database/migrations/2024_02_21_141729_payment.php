@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->float('transaction_amount');
             $table->integer('installments');
-            $table->string('token')->unique();
+            $table->string('token');
             $table->string('payment_method_id');
             $table->string('payer_entity_type')->default('individual');
             $table->string('payer_type')->default('customer');
