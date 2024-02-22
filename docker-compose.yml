@@ -30,7 +30,7 @@ services:
       - "3306:3306"
 
   jaya_nginx:
-    image: webdevops/php-nginx:8.3
+    image: webdevops/php-nginx-dev:8.3
     container_name: jaya_nginx
     networks:
       - internal
@@ -46,6 +46,12 @@ services:
       - PHP_DATE_TIMEZONE=UTC
       - PHP_DISPLAY_ERRORS=0
       - WEB_DOCUMENT_INDEX=index.php
+      - PHP_DEBUGGER="xdebug"
+      - XDEBUG_MODE=debug,coverage,develop
+      - XDEBUG_START_WITH_REQUEST=yes
+      - XDEBUG_REMOTE_PORT=9090
+      - XDEBUG_CLIENT_HOST=host.docker.internal
+      - XDEBUG_CLIENT_PORT=9090
     expose:
       - 9090
     ports:
