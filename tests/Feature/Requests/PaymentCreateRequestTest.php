@@ -55,6 +55,5 @@ class PaymentCreateRequestTest extends TestCase
                 'message' => 'Payment not provided in the request body'
             ]
         );
-
     }
 }
