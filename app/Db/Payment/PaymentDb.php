@@ -3,6 +3,7 @@
 namespace App\Db\Payment;
 
 use App\Domain\Payment\Payment;
+use App\DTO\PaymentListDTO;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
@@ -32,5 +33,35 @@ class PaymentDb implements PaymentPersistenceInterface
         if (!$record) {
             throw new RuntimeException('Failed insert');
         }
+    }
+
+    public function listAllPayments(Payment $payment): void
+    {
+        $records = DB::table(self::PAYMENTS_TABLE)
+            ->select([
+                'id',
+                'transaction_amount',
+                'installments',
+                'token',
+                'payment_method_id',
+                'payer_entity_type',
+                'payer_type',
+                'payer_email',
+                'payer_identification_type',
+                'payer_identification_number',
+                'notification_url',
+                'created_at',
+                'updated_at',
+                'status',
+            ])
+            ->get()
+            ->all();
+
+        $payments = [];
+        foreach ($records as $record) {
+            $payments[] = new PaymentListDTO($record);
+        }
+
+        $payment->paymentsList = $payments;
     }
 }
