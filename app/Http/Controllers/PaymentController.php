@@ -26,4 +26,12 @@ class PaymentController extends BaseController
                 ]
             )->setStatusCode(201);
     }
+
+    public function listAllPayments(): JsonResponse
+    {
+        $paymentsList = (new Payment(new PaymentDb()))->listAllPayments();
+
+        return response()
+            ->json($paymentsList)->setStatusCode(200);
+    }
 }
