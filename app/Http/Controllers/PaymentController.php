@@ -34,7 +34,7 @@ class PaymentController extends BaseController
                     'id' => $payment->createDTO->id->value,
                     'created_at' => $payment->createDTO->createdAt->value
                 ]
-            )->setStatusCode(201);
+            )->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function listAllPayments(): JsonResponse
