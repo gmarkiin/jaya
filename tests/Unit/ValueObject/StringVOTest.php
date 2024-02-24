@@ -2,33 +2,42 @@
 
 namespace Tests\Unit\ValueObject;
 
+use App\Exceptions\InvalidPropertyValueException;
 use App\ValueObject\StringVO;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Tests\TestCase;
 
 class StringVOTest extends TestCase
 {
-    public function testValidStringVO(): void
+    /**
+     * @throws InvalidPropertyValueException
+     */
+    public function testValidString(): void
     {
-        $value = 'valid_value';
-        $stringVO = new StringVO($value);
+        $string = 'valid_value';
 
-        $this->assertSame($value, $stringVO->value);
+        $this->assertSame($string, new StringVO($string));
     }
 
-    public function testInvalidStringVO(): void
+    public function testInvalidType(): void
     {
-        $value = 1234;
+        $string = 1234;
 
-        $this->expectException(HttpResponseException::class);
-        new StringVO($value);
+        $this->expectException(InvalidPropertyValueException::class);
+        $this->expectExceptionMessage("The value '$string' need's be a string");
+
+        new StringVO($string);
     }
 
-    public function testNullStringVO(): void
+    /**
+     * @throws InvalidPropertyValueException
+     */
+    public function testEmptyValue(): void
     {
         $value = null;
 
-        $this->expectException(HttpResponseException::class);
+        $this->expectException(InvalidPropertyValueException::class);
+        $this->expectExceptionMessage('The value cannot be empty');
+
         new StringVO($value);
     }
 }

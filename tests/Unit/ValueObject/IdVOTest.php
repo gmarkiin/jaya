@@ -2,33 +2,45 @@
 
 namespace Tests\Unit\ValueObject;
 
+use App\Exceptions\InvalidPropertyValueException;
 use App\ValueObject\IdVO;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Tests\TestCase;
 
 class IdVOTest extends TestCase
 {
+    /**
+     * @throws InvalidPropertyValueException
+     */
     public function testValidIdVO(): void
     {
-        $value = '71df6c8a-0f4d-4711-809a-9570db270eee';
-        $floatVO = new IdVO($value);
+        $id = '71df6c8a-0f4d-4711-809a-9570db270eee';
 
-        $this->assertSame($value, $floatVO->value);
+        $this->assertSame($id, (new IdVO($id))->value);
     }
 
-    public function testInvalidIdVO(): void
+    /**
+     * @throws InvalidPropertyValueException
+     */
+    public function testInvalidId(): void
     {
-        $value = '0242ac120002';
+        $id = '0242ac120002';
 
-        $this->expectException(HttpResponseException::class);
-        new IdVO($value);
+        $this->expectException(InvalidPropertyValueException::class);
+        $this->expectExceptionMessage("The ID '$id' isn't a UUID");
+
+        new IdVO($id);
     }
 
-    public function testNullIdVO(): void
+    /**
+     * @throws InvalidPropertyValueException
+     */
+    public function testInvalidType(): void
     {
-        $value = null;
+        $id = null;
 
-        $this->expectException(HttpResponseException::class);
-        new IdVO($value);
+        $this->expectException(InvalidPropertyValueException::class);
+        $this->expectExceptionMessage("The ID '$id' need's be a string");
+
+        new IdVO($id);
     }
 }
