@@ -93,7 +93,7 @@ class PaymentDb implements PaymentPersistenceInterface
         if (empty($record)) {
             throw new HttpResponseException(
                 response()->json([
-                    'message' => 'Payment not found',
+                    'message' => 'Payment not found with the specified id',
                 ], Response::HTTP_NOT_FOUND)
             );
         }
