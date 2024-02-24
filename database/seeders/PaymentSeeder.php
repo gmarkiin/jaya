@@ -3,21 +3,20 @@
 namespace Database\Seeders;
 
 use App\Enum\PaymentStatusEnum;
-use App\ValueObject\DateVO;
-use App\ValueObject\StringVO;
-use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class PaymentSeeder extends Seeder
 {
+    /**
+     */
     public function run(): void
     {
         DB::table('payments')->insert([
             'id' => Str::uuid(),
             'transaction_amount' => $this->randFloat(),
-            'installments' => rand(),
+            'installments' => 2,
             'token' => Str::random(32),
             'payment_method_id' => 'master',
             'payer_entity_type' => 'individual',
@@ -26,7 +25,7 @@ class PaymentSeeder extends Seeder
             'payer_identification_type' => 'CPF',
             'payer_identification_number' => '84353709097',
             'notification_url' => 'https://webhook.site/#!/view/e3d3/181fcbdc-8736-479a-b782-6d97f183df49/1',
-            'created_at' => (new DateVO(date('Y-m-d')))->value,
+            'created_at' => date('Y-m-d'),
             'updated_at' => null,
             'status' => PaymentStatusEnum::PENDING->value,
         ]);
