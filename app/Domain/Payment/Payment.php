@@ -11,6 +11,7 @@ class Payment
     private ?PaymentPersistenceInterface $paymentPersistence;
     public ?PaymentCreateDTO $createDTO = null;
     public array $paymentsList;
+    public PaymentListDTO $paymentList;
     public string $notificationUrl = 'i dont know YET';
 
     public function __construct(PaymentPersistenceInterface $paymentPersistence = null)
@@ -28,11 +29,18 @@ class Payment
         $this->paymentPersistence->listAllPayments($this);
 
         $payments = [];
-        foreach ($this->paymentsList as $payment) {
+        foreach ($this->paymentsList as $payment) { /* @var $payment PaymentListDto */
             $payments[] = $payment->getAllProperties();
         }
 
         return $payments;
+    }
+
+    public function listPaymentById(string $paymentId): array
+    {
+        $this->paymentPersistence->listPaymentById($paymentId, $this);
+
+        return $this->paymentList->getAllProperties();
     }
 
 }
