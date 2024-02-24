@@ -25,7 +25,7 @@ class UrlVO
 
         $pattern = '/^(https?):\/\/([^\s\/?.#]+\.?)+(\/\S*)?$/i';
         if (!preg_match($pattern, $this->value)) {
-            throw new InvalidPropertyValueException("The url '$this->value' isn't a valid");
+            throw new InvalidPropertyValueException("The url '$this->value' isn't valid");
         }
     }
 }

@@ -33,7 +33,7 @@ class UrlVOTest extends TestCase
         $url = 'webhook.site/e3d32ab9-737a-4832-a5fa-f36a172cec53';
 
         $this->expectException(InvalidPropertyValueException::class);
-        $this->expectExceptionMessage("The url '$url' isn't a UUID");
+        $this->expectExceptionMessage("The url '$url' isn't valid");
 
         new UrlVO($url);
     }
