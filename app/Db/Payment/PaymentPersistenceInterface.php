@@ -11,4 +11,6 @@ interface PaymentPersistenceInterface
     public function listAllPayments(Payment $payment): void;
 
     public function listPaymentById(string $paymentId, Payment $payment): void;
+
+    public function confirmPaymentById(string $paymentId, Payment $payment): void;
 }
