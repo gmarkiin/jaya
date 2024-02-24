@@ -4,6 +4,7 @@ namespace App\Db\Payment;
 
 use App\Domain\Payment\Payment;
 use App\DTO\PaymentListDTO;
+use App\Enum\PaymentStatusEnum;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
@@ -99,5 +100,21 @@ class PaymentDb implements PaymentPersistenceInterface
         }
 
         $payment->paymentList = new PaymentListDTO((object)$record);
+    }
+
+    public function confirmPaymentById(string $paymentId, Payment $payment): void
+    {
+        $record = DB::table(self::PAYMENTS_TABLE)
+            ->where('id', $paymentId)
+            ->update(['status' => PaymentStatusEnum::PAID->value]);
+
+
+        if (!$record) {
+            throw new HttpResponseException(
+                response()->json([
+                    'message' => 'Payment not found with the specified id',
+                ], Response::HTTP_NOT_FOUND)
+            );
+        }
     }
 }
