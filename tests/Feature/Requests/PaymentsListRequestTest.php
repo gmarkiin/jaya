@@ -15,7 +15,7 @@ class PaymentsListRequestTest extends TestCase
         Artisan::call('db:seed', ['--class' => 'PaymentSeeder']);
         $response = $this->json('GET', '/api/rest/payments');
 
-        $response->assertOk();
+        $response->assertAccepted();
         $this->assertDatabaseCount('payments', 1);
     }
 
@@ -23,7 +23,7 @@ class PaymentsListRequestTest extends TestCase
     {
         $response = $this->json('GET', '/api/rest/payments');
 
-        $response->assertOk();
+        $response->assertAccepted();
         $response->json([]);
     }
 }
