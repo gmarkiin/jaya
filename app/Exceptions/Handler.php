@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -24,7 +25,22 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {
-            //
+
         });
+    }
+
+    public function render($request, Throwable $e): JsonResponse
+    {
+        $message = 'Invalid payment provided.The possible reasons are:' .
+            'A field of the provided payment was null or with invalid values';
+
+        switch ($e) {
+            case $e instanceof InvalidPropertyValueException:
+                return response()->json(['message' => $message], $e->getCode());
+            case $e instanceof BankslipNotFoundException:
+            case $e instanceof PaymentNotFoundException:
+                return response()->json(['message' => $e->getMessage()], $e->getCode());
+            default: return parent::render($request, $e);
+        }
     }
 }
