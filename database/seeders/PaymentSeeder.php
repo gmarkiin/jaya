@@ -24,7 +24,7 @@ class PaymentSeeder extends Seeder
             'payer_email' => Str::random(12) . '@example.com',
             'payer_identification_type' => 'CPF',
             'payer_identification_number' => '84353709097',
-            'notification_url' => 'need change',
+            'notification_url' => 'https://webhook.site/#!/view/e3d3/181fcbdc-8736-479a-b782-6d97f183df49/1',
             'created_at' => (new StringVO(Carbon::now()->format('Y-m-d')))->value,
             'updated_at' => null,
             'status' => PaymentStatusEnum::PENDING->value,

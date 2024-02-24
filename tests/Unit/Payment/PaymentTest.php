@@ -46,7 +46,7 @@ class PaymentTest extends TestCase
             'payer_email' => $payment->createDTO->payerEmail->value,
             'payer_identification_type' => $payment->createDTO->payerIdentificationType->value,
             'payer_identification_number' => $payment->createDTO->payerIdentificationNumber->value,
-            'notification_url' => $payment->notificationUrl,
+            'notification_url' => $payment->createDTO->notificationUrl->value,
             'created_at' => $payment->createDTO->createdAt->value,
             'status' => $payment->createDTO->status->value
         ]);

@@ -7,6 +7,7 @@ use App\ValueObject\FloatVO;
 use App\ValueObject\IdVO;
 use App\ValueObject\IntegerVO;
 use App\ValueObject\StringVO;
+use App\ValueObject\UrlVO;
 use stdClass;
 
 class PaymentListDTO
@@ -24,7 +25,7 @@ class PaymentListDTO
     public readonly PaymentStatusVO $status;
     public readonly StringVO $createdAt;
     public readonly ?StringVO $updatedAt;
-    public readonly StringVO $notificationUrl;
+    public readonly UrlVO $notificationUrl;
 
     public function __construct(stdClass $data)
     {
@@ -39,7 +40,7 @@ class PaymentListDTO
         $this->payerEmail = new StringVO($data->payer_email);
         $this->payerIdentificationType = new StringVO($data->payer_identification_type);
         $this->payerIdentificationNumber = new StringVO($data->payer_identification_number);
-        $this->notificationUrl = new StringVO($data->notification_url);
+        $this->notificationUrl = new UrlVO($data->notification_url);
         $this->createdAt = new StringVO($data->created_at);
         $this->updatedAt = $data->updated_at ? new StringVO($data->updated_at) : null;
     }

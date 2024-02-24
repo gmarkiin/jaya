@@ -10,9 +10,8 @@ class Payment
 {
     private ?PaymentPersistenceInterface $paymentPersistence;
     public ?PaymentCreateDTO $createDTO = null;
-    public array $paymentsList;
     public PaymentListDTO $paymentList;
-    public string $notificationUrl = 'i dont know YET';
+    public array $paymentsList;
 
     public function __construct(PaymentPersistenceInterface $paymentPersistence = null)
     {
@@ -52,5 +51,4 @@ class Payment
     {
         $this->paymentPersistence->cancelPaymentById($paymentId, $this);
     }
-
 }

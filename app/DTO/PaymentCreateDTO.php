@@ -7,6 +7,7 @@ use App\ValueObject\FloatVO;
 use App\ValueObject\IdVO;
 use App\ValueObject\IntegerVO;
 use App\ValueObject\StringVO;
+use App\ValueObject\UrlVO;
 use Carbon\Carbon;
 use Ramsey\Uuid\Uuid;
 
@@ -24,9 +25,11 @@ class PaymentCreateDTO
     public readonly IdVO $id;
     public readonly PaymentStatusVO $status;
     public readonly StringVO $createdAt;
+    public readonly UrlVO $notificationUrl;
 
-    private const PAYER_ENTITY_TYPE = 'individual';
-    private const PAYER_TYPE = 'customer';
+    private const PAYER_ENTITY_TYPE_DEFAULT = 'individual';
+    private const PAYER_TYPE_DEFAULT = 'customer';
+    private const NOTIFICATION_URL_DEFAULT = 'https://webhook.site/e3d32ab9-737a-4832-a5fa-f36a172cec53';
 
     public function __construct(array $requestData)
     {
@@ -41,11 +44,12 @@ class PaymentCreateDTO
 
         $this->payerIdentificationType = new StringVO($payerIdentificationData['type']);
         $this->payerIdentificationNumber = new StringVO($payerIdentificationData['number']);
-        $this->payerEntityType = new StringVO(self::PAYER_ENTITY_TYPE);
-        $this->payerType = new StringVO(self::PAYER_TYPE);
+        $this->payerEntityType = new StringVO(self::PAYER_ENTITY_TYPE_DEFAULT);
+        $this->payerType = new StringVO(self::PAYER_TYPE_DEFAULT);
 
         $this->id = new IdVO(Uuid::uuid4()->toString());
         $this->status = new PaymentStatusVO(PaymentStatusEnum::PENDING->value);
         $this->createdAt = new StringVO(Carbon::now()->format('Y-m-d'));
+        $this->notificationUrl = new UrlVO(self::NOTIFICATION_URL_DEFAULT);
     }
 }
