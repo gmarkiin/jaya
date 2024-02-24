@@ -15,7 +15,7 @@ class StringVOTest extends TestCase
     {
         $string = 'valid_value';
 
-        $this->assertSame($string, new StringVO($string));
+        $this->assertSame($string, (new StringVO($string))->value);
     }
 
     public function testInvalidType(): void
@@ -33,11 +33,11 @@ class StringVOTest extends TestCase
      */
     public function testEmptyValue(): void
     {
-        $value = null;
+        $string = '';
 
         $this->expectException(InvalidPropertyValueException::class);
         $this->expectExceptionMessage('The value cannot be empty');
 
-        new StringVO($value);
+        new StringVO($string);
     }
 }
