@@ -4,8 +4,10 @@ namespace App\Db\Payment;
 
 use App\Domain\Payment\Payment;
 use App\DTO\PaymentListDTO;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
+use Symfony\Component\HttpFoundation\Response;
 
 class PaymentDb implements PaymentPersistenceInterface
 {
@@ -63,5 +65,39 @@ class PaymentDb implements PaymentPersistenceInterface
         }
 
         $payment->paymentsList = $payments;
+    }
+
+    public function listPaymentById(string $paymentId, Payment $payment): void
+    {
+        $record = DB::table(self::PAYMENTS_TABLE)
+            ->select([
+                'id',
+                'transaction_amount',
+                'installments',
+                'token',
+                'payment_method_id',
+                'payer_entity_type',
+                'payer_type',
+                'payer_email',
+                'payer_identification_type',
+                'payer_identification_number',
+                'notification_url',
+                'created_at',
+                'updated_at',
+                'status',
+            ])
+            ->where(['id' => $paymentId])
+            ->get()
+            ->toArray()[0];
+
+        if (empty($record)) {
+            throw new HttpResponseException(
+                response()->json([
+                    'message' => 'Payment not found',
+                ], Response::HTTP_NOT_FOUND)
+            );
+        }
+
+        $payment->paymentList = new PaymentListDTO((object)$record);
     }
 }
