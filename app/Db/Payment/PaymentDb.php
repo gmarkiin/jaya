@@ -112,6 +112,22 @@ class PaymentDb implements PaymentPersistenceInterface
         if (!$record) {
             throw new HttpResponseException(
                 response()->json([
+                    'message' => 'Bank slip not found with the specified id',
+                ], Response::HTTP_NOT_FOUND)
+            );
+        }
+    }
+
+    public function cancelPaymentById(string $paymentId, Payment $payment): void
+    {
+        $record = DB::table(self::PAYMENTS_TABLE)
+            ->where('id', $paymentId)
+            ->update(['status' => PaymentStatusEnum::CANCELED->value]);
+
+
+        if (!$record) {
+            throw new HttpResponseException(
+                response()->json([
                     'message' => 'Payment not found with the specified id',
                 ], Response::HTTP_NOT_FOUND)
             );
