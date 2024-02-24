@@ -55,7 +55,7 @@ class PaymentController extends BaseController
                 [
                     'status' => PaymentStatusEnum::PAID->name
                 ]
-            )->setStatusCode(Response::HTTP_ACCEPTED);
+            )->setStatusCode(Response::HTTP_NO_CONTENT);
     }
 
     public function cancelPayment(string $id): JsonResponse
@@ -67,6 +67,6 @@ class PaymentController extends BaseController
                 [
                     'status' => PaymentStatusEnum::CANCELED->name
                 ]
-            )->setStatusCode(Response::HTTP_ACCEPTED);
+            )->setStatusCode(Response::HTTP_NO_CONTENT);
     }
 }
