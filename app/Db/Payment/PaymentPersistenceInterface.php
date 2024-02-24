@@ -9,4 +9,6 @@ interface PaymentPersistenceInterface
     public function create(Payment $payment): void;
 
     public function listAllPayments(Payment $payment): void;
+
+    public function listPaymentById(string $paymentId, Payment $payment): void;
 }
