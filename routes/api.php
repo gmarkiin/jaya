@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::prefix('/rest')->controller(PaymentController::class)->group(function () {
-    Route::post('/payments', 'create');
+    Route::post('/payments', 'createPayment');
     Route::get('/payments', 'listAllPayments');
+    Route::get('/payments/{id}', 'listPayment');
 });

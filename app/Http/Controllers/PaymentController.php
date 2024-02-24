@@ -11,7 +11,7 @@ use Illuminate\Routing\Controller as BaseController;
 
 class PaymentController extends BaseController
 {
-    public function create(PaymentCreateRequest $request): JsonResponse
+    public function createPayment(PaymentCreateRequest $request): JsonResponse
     {
         $paymentCreateDto = new PaymentCreateDTO($request->toArray());
         $payment = new Payment(new PaymentDb());
@@ -28,6 +28,15 @@ class PaymentController extends BaseController
     }
 
     public function listAllPayments(): JsonResponse
+    {
+        $paymentsList = (new Payment(new PaymentDb()))->listAllPayments();
+
+        return response()
+            ->json($paymentsList)->setStatusCode(200);
+    }
+
+
+    public function listPayment(): JsonResponse
     {
         $paymentsList = (new Payment(new PaymentDb()))->listAllPayments();
 
