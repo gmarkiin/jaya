@@ -8,7 +8,6 @@ use App\ValueObject\IdVO;
 use App\ValueObject\IntegerVO;
 use App\ValueObject\StringVO;
 use App\ValueObject\UrlVO;
-use Carbon\Carbon;
 use Ramsey\Uuid\Uuid;
 
 class PaymentCreateDTO
@@ -49,7 +48,7 @@ class PaymentCreateDTO
 
         $this->id = new IdVO(Uuid::uuid4()->toString());
         $this->status = new PaymentStatusVO(PaymentStatusEnum::PENDING->value);
-        $this->createdAt = new StringVO(Carbon::now()->format('Y-m-d'));
+        $this->createdAt = new StringVO(date('Y-m-d'));
         $this->notificationUrl = new UrlVO(self::NOTIFICATION_URL_DEFAULT);
     }
 }

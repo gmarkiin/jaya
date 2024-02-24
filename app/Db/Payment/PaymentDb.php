@@ -5,6 +5,8 @@ namespace App\Db\Payment;
 use App\Domain\Payment\Payment;
 use App\DTO\PaymentListDTO;
 use App\Enum\PaymentStatusEnum;
+use App\ValueObject\DateVO;
+use App\ValueObject\StringVO;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
@@ -106,7 +108,12 @@ class PaymentDb implements PaymentPersistenceInterface
     {
         $record = DB::table(self::PAYMENTS_TABLE)
             ->where('id', $paymentId)
-            ->update(['status' => PaymentStatusEnum::PAID->value]);
+            ->update(
+                [
+                    'status' => PaymentStatusEnum::PAID->value,
+                    'updated_at' => date('Y-m-d')
+                ]
+            );
 
 
         if (!$record) {
@@ -122,8 +129,12 @@ class PaymentDb implements PaymentPersistenceInterface
     {
         $record = DB::table(self::PAYMENTS_TABLE)
             ->where('id', $paymentId)
-            ->update(['status' => PaymentStatusEnum::CANCELED->value]);
-
+            ->update(
+                [
+                    'status' => PaymentStatusEnum::CANCELED->value,
+                    'updated_at' => date('Y-m-d'),
+                ]
+            );
 
         if (!$record) {
             throw new HttpResponseException(

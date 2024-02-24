@@ -3,6 +3,7 @@
 namespace App\DTO;
 
 use App\Domain\Payment\ValueObject\PaymentStatusVO;
+use App\ValueObject\DateVO;
 use App\ValueObject\FloatVO;
 use App\ValueObject\IdVO;
 use App\ValueObject\IntegerVO;
@@ -23,8 +24,8 @@ class PaymentListDTO
     public readonly StringVO $payerType;
     public readonly IdVO $id;
     public readonly PaymentStatusVO $status;
-    public readonly StringVO $createdAt;
-    public readonly ?StringVO $updatedAt;
+    public readonly DateVO $createdAt;
+    public readonly ?DateVO $updatedAt;
     public readonly UrlVO $notificationUrl;
 
     public function __construct(stdClass $data)
@@ -41,7 +42,7 @@ class PaymentListDTO
         $this->payerIdentificationType = new StringVO($data->payer_identification_type);
         $this->payerIdentificationNumber = new StringVO($data->payer_identification_number);
         $this->notificationUrl = new UrlVO($data->notification_url);
-        $this->createdAt = new StringVO($data->created_at);
+        $this->createdAt = new DateVO($data->created_at);
         $this->updatedAt = $data->updated_at ? new StringVO($data->updated_at) : null;
     }
 
