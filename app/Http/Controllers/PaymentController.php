@@ -4,15 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Db\Payment\PaymentDb;
 use App\Domain\Payment\Payment;
+use App\Domain\Payment\ValueObject\PaymentStatusVO;
 use App\DTO\PaymentCreateDTO;
+use App\DTO\PaymentStatusUpdateDTO;
 use App\Enum\PaymentStatusEnum;
+use App\Exceptions\InvalidPropertyValueException;
 use App\Http\Requests\PaymentCreateRequest;
+use App\ValueObject\DateVO;
+use App\ValueObject\IdVO;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
 class PaymentController extends BaseController
 {
+    /**
+     * @throws InvalidPropertyValueException
+     */
     public function createPayment(PaymentCreateRequest $request): JsonResponse
     {
         $paymentCreateDto = new PaymentCreateDTO($request->toArray());
@@ -38,17 +46,31 @@ class PaymentController extends BaseController
     }
 
 
+    /**
+     * @throws InvalidPropertyValueException
+     */
     public function listPayment(string $id): JsonResponse
     {
+        $id = new IdVO($id);
         $paymentsList = (new Payment(new PaymentDb()))->listPaymentById($id);
 
         return response()
             ->json($paymentsList)->setStatusCode(Response::HTTP_OK);
     }
 
+    /**
+     * @throws InvalidPropertyValueException
+     */
     public function confirmPayment(string $id): JsonResponse
     {
-        (new Payment(new PaymentDb()))->confirmPaymentById($id);
+        $payment = (new Payment(new PaymentDb()));
+        $payment->paymentStatusUpdateDTO = new PaymentStatusUpdateDTO(
+            new IdVO($id),
+            new PaymentStatusVO(PaymentStatusEnum::PAID->value),
+            new DateVO(date('Y-m-d'))
+        );
+
+        $payment->confirmPaymentById();
 
         return response()
             ->json(
@@ -58,9 +80,18 @@ class PaymentController extends BaseController
             )->setStatusCode(Response::HTTP_NO_CONTENT);
     }
 
+    /**
+     * @throws InvalidPropertyValueException
+     */
     public function cancelPayment(string $id): JsonResponse
     {
-        (new Payment(new PaymentDb()))->cancelPaymentById($id);
+        $payment = (new Payment(new PaymentDb()));
+        $payment->paymentStatusUpdateDTO = new PaymentStatusUpdateDTO(
+            new IdVO($id),
+            new PaymentStatusVO(PaymentStatusEnum::CANCELED->value),
+            new DateVO(date('Y-m-d'))
+        );
+        $payment->cancelPaymentById();
 
         return response()
             ->json(

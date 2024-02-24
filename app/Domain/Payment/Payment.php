@@ -5,12 +5,15 @@ namespace App\Domain\Payment;
 use App\Db\Payment\PaymentPersistenceInterface;
 use App\DTO\PaymentCreateDTO;
 use App\DTO\PaymentListDTO;
+use App\DTO\PaymentStatusUpdateDTO;
+use App\ValueObject\IdVO;
 
 class Payment
 {
     private ?PaymentPersistenceInterface $paymentPersistence;
     public ?PaymentCreateDTO $createDTO = null;
     public PaymentListDTO $paymentList;
+    public PaymentStatusUpdateDTO $paymentStatusUpdateDTO;
     public array $paymentsList;
 
     public function __construct(PaymentPersistenceInterface $paymentPersistence = null)
@@ -35,20 +38,20 @@ class Payment
         return $payments;
     }
 
-    public function listPaymentById(string $paymentId): array
+    public function listPaymentById(IdVO $paymentId): array
     {
         $this->paymentPersistence->listPaymentById($paymentId, $this);
 
         return $this->paymentList->getAllProperties();
     }
 
-    public function confirmPaymentById(string $paymentId): void
+    public function confirmPaymentById(): void
     {
-        $this->paymentPersistence->confirmPaymentById($paymentId, $this);
+        $this->paymentPersistence->confirmPaymentById($this);
     }
 
-    public function cancelPaymentById(string $paymentId): void
+    public function cancelPaymentById(): void
     {
-        $this->paymentPersistence->cancelPaymentById($paymentId, $this);
+        $this->paymentPersistence->cancelPaymentById($this);
     }
 }

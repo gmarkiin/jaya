@@ -3,6 +3,7 @@
 namespace App\Db\Payment;
 
 use App\Domain\Payment\Payment;
+use App\ValueObject\IdVO;
 
 interface PaymentPersistenceInterface
 {
@@ -10,9 +11,9 @@ interface PaymentPersistenceInterface
 
     public function listAllPayments(Payment $payment): void;
 
-    public function listPaymentById(string $paymentId, Payment $payment): void;
+    public function listPaymentById(IdVO $paymentId, Payment $payment): void;
 
-    public function confirmPaymentById(string $paymentId, Payment $payment): void;
+    public function confirmPaymentById(Payment $payment): void;
 
-    public function cancelPaymentById(string $paymentId, Payment $payment): void;
+    public function cancelPaymentById(Payment $payment): void;
 }

@@ -5,17 +5,20 @@ namespace App\Db\Payment;
 use App\Domain\Payment\Payment;
 use App\DTO\PaymentListDTO;
 use App\Enum\PaymentStatusEnum;
-use App\ValueObject\DateVO;
-use App\ValueObject\StringVO;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Exceptions\BankslipNotFoundException;
+use App\Exceptions\InvalidPropertyValueException;
+use App\Exceptions\PersistenceException;
+use App\Exceptions\PaymentNotFoundException;
+use App\ValueObject\IdVO;
 use Illuminate\Support\Facades\DB;
-use RuntimeException;
-use Symfony\Component\HttpFoundation\Response;
 
 class PaymentDb implements PaymentPersistenceInterface
 {
     private const PAYMENTS_TABLE = 'payments';
 
+    /**
+     * @throws PersistenceException
+     */
     public function create(Payment $payment): void
     {
         $record = DB::table(self::PAYMENTS_TABLE)
@@ -36,10 +39,13 @@ class PaymentDb implements PaymentPersistenceInterface
             ]);
 
         if (!$record) {
-            throw new RuntimeException('Failed insert');
+            throw new PersistenceException('Failed to insert payment');
         }
     }
 
+    /**
+     * @throws InvalidPropertyValueException
+     */
     public function listAllPayments(Payment $payment): void
     {
         $records = DB::table(self::PAYMENTS_TABLE)
@@ -70,7 +76,11 @@ class PaymentDb implements PaymentPersistenceInterface
         $payment->paymentsList = $payments;
     }
 
-    public function listPaymentById(string $paymentId, Payment $payment): void
+    /**
+     * @throws PaymentNotFoundException
+     * @throws InvalidPropertyValueException
+     */
+    public function listPaymentById(IdVO $paymentId, Payment $payment): void
     {
         $record = DB::table(self::PAYMENTS_TABLE)
             ->select([
@@ -89,59 +99,53 @@ class PaymentDb implements PaymentPersistenceInterface
                 'updated_at',
                 'status',
             ])
-            ->where(['id' => $paymentId])
+            ->where(['id' => $paymentId->value])
             ->get()
             ->toArray();
 
         if (empty($record)) {
-            throw new HttpResponseException(
-                response()->json([
-                    'message' => 'Payment not found with the specified id',
-                ], Response::HTTP_NOT_FOUND)
-            );
+            throw new PaymentNotFoundException();
         }
 
         $payment->paymentList = new PaymentListDTO((object)$record[0]);
     }
 
-    public function confirmPaymentById(string $paymentId, Payment $payment): void
+    /**
+     * @throws BankslipNotFoundException
+     */
+    public function confirmPaymentById(Payment $payment): void
     {
         $record = DB::table(self::PAYMENTS_TABLE)
-            ->where('id', $paymentId)
+            ->where('id', $payment->paymentStatusUpdateDTO->id->value)
             ->update(
                 [
-                    'status' => PaymentStatusEnum::PAID->value,
-                    'updated_at' => date('Y-m-d')
+                    'status' => $payment->paymentStatusUpdateDTO->status->value,
+                    'updated_at' => $payment->paymentStatusUpdateDTO->updatedDate->value
                 ]
             );
 
 
         if (!$record) {
-            throw new HttpResponseException(
-                response()->json([
-                    'message' => 'Bank slip not found with the specified id',
-                ], Response::HTTP_NOT_FOUND)
-            );
+            throw new BankslipNotFoundException();
         }
     }
 
-    public function cancelPaymentById(string $paymentId, Payment $payment): void
+    /**
+     * @throws PaymentNotFoundException
+     */
+    public function cancelPaymentById(Payment $payment): void
     {
         $record = DB::table(self::PAYMENTS_TABLE)
-            ->where('id', $paymentId)
+            ->where('id', $payment->paymentStatusUpdateDTO->id->value)
             ->update(
                 [
-                    'status' => PaymentStatusEnum::CANCELED->value,
-                    'updated_at' => date('Y-m-d'),
+                    'status' => $payment->paymentStatusUpdateDTO->status->value,
+                    'updated_at' => $payment->paymentStatusUpdateDTO->updatedDate->value
                 ]
             );
 
         if (!$record) {
-            throw new HttpResponseException(
-                response()->json([
-                    'message' => 'Payment not found with the specified id',
-                ], Response::HTTP_NOT_FOUND)
-            );
+            throw new PaymentNotFoundException();
         }
     }
 }
