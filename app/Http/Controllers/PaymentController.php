@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Db\Payment\PaymentDb;
 use App\Domain\Payment\Payment;
 use App\DTO\PaymentCreateDTO;
+use App\Enum\PaymentStatusEnum;
 use App\Http\Requests\PaymentCreateRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Symfony\Component\HttpFoundation\Response;
 
 class PaymentController extends BaseController
 {
@@ -32,7 +34,7 @@ class PaymentController extends BaseController
         $paymentsList = (new Payment(new PaymentDb()))->listAllPayments();
 
         return response()
-            ->json($paymentsList)->setStatusCode(200);
+            ->json($paymentsList)->setStatusCode(Response::HTTP_ACCEPTED);
     }
 
 
@@ -41,6 +43,18 @@ class PaymentController extends BaseController
         $paymentsList = (new Payment(new PaymentDb()))->listPaymentById($id);
 
         return response()
-            ->json($paymentsList)->setStatusCode(200);
+            ->json($paymentsList)->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function confirmPayment(string $id): JsonResponse
+    {
+        (new Payment(new PaymentDb()))->confirmPaymentById($id);
+
+        return response()
+            ->json(
+                [
+                    'status' => PaymentStatusEnum::PAID->name
+                ]
+            )->setStatusCode(Response::HTTP_ACCEPTED);
     }
 }
