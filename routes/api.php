@@ -18,4 +18,5 @@ Route::prefix('/rest')->controller(PaymentController::class)->group(function () 
     Route::get('/payments', 'listAllPayments');
     Route::get('/payments/{id}', 'listPayment');
     Route::patch('/payments/{id}', 'confirmPayment');
+    Route::delete('/payments/{id}', 'cancelPayment');
 });
