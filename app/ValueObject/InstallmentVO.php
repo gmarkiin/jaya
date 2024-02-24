@@ -4,7 +4,7 @@ namespace App\ValueObject;
 
 use App\Exceptions\InvalidPropertyValueException;
 
-class StringVO
+class InstallmentVO
 {
     /**
      * @throws InvalidPropertyValueException
@@ -19,12 +19,12 @@ class StringVO
      */
     private function validateValue(): void
     {
-        if (!is_string($this->value)) {
-            throw new InvalidPropertyValueException("The value '$this->value' need's be a string");
+        if (!is_int($this->value)) {
+            throw new InvalidPropertyValueException("The installment need's be a integer");
         }
 
-        if (empty($this->value)) {
-            throw new InvalidPropertyValueException('The value cannot be empty');
+        if ($this->value <= 0) {
+            throw new InvalidPropertyValueException('The installment cannot be less than 0');
         }
     }
 }

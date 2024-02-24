@@ -2,25 +2,30 @@
 
 namespace App\ValueObject;
 
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Exceptions\InvalidPropertyValueException;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\HttpFoundation\Response;
 
 class IdVO
 {
+    /**
+     * @throws InvalidPropertyValueException
+     */
     public function __construct(public readonly mixed $value)
     {
         $this->validateValue();
     }
 
+    /**
+     * @throws InvalidPropertyValueException
+     */
     private function validateValue(): void
     {
-        if (!is_string($this->value) || !Uuid::isValid($this->value)) {
-            throw new HttpResponseException(
-                response()->json([
-                    'message' => 'Invalid uuid',
-                ], Response::HTTP_INTERNAL_SERVER_ERROR)
-            );
+        if (!is_string($this->value)) {
+            throw new InvalidPropertyValueException("The ID '$this->value' need's be a string");
+        }
+
+        if (!Uuid::isValid($this->value)) {
+            throw new InvalidPropertyValueException("The ID '$this->value' isn't a UUID");
         }
     }
 }

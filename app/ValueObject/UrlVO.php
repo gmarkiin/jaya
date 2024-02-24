@@ -2,28 +2,30 @@
 
 namespace App\ValueObject;
 
-use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Exceptions\InvalidPropertyValueException;
 
 class UrlVO
 {
+    /**
+     * @throws InvalidPropertyValueException
+     */
     public function __construct(public readonly mixed $value)
     {
-        $this->validateValue();
+        $this->validateUrl();
     }
 
-    private function validateValue(): void
+    /**
+     * @throws InvalidPropertyValueException
+     */
+    private function validateUrl(): void
     {
-        $pattern = '/^(https?):\/\/([^\s\/?.#]+\.?)+(\/\S*)?$/i';
-        if (!is_string($this->value) || !preg_match($pattern, $this->value)) {
-            $message = 'Invalid payment provided.The possible reasons are:' .
-                'A field of the provided payment was null or with invalid values';
+        if (!is_string($this->value)) {
+            throw new InvalidPropertyValueException("The url '$this->value' need's be a string");
+        }
 
-            throw new HttpResponseException(
-                response()->json([
-                    'message' => $message,
-                ], Response::HTTP_UNPROCESSABLE_ENTITY)
-            );
+        $pattern = '/^(https?):\/\/([^\s\/?.#]+\.?)+(\/\S*)?$/i';
+        if (!preg_match($pattern, $this->value)) {
+            throw new InvalidPropertyValueException("The url '$this->value' isn't a UUID");
         }
     }
 }

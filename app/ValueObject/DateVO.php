@@ -2,27 +2,35 @@
 
 namespace App\ValueObject;
 
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Symfony\Component\HttpFoundation\Response;
+use App\Exceptions\InvalidPropertyValueException;
+use DateTime;
 
 class DateVO
 {
+    /**
+     * @throws InvalidPropertyValueException
+     */
     public function __construct(public readonly mixed $value)
     {
-        $this->validateValue();
+        $this->validateDate();
     }
 
-    private function validateValue(): void
+    /**
+     * @throws InvalidPropertyValueException
+     */
+    private function validateDate(): void
     {
-        if (!is_string($this->value) || $this->value < date('Y-m-d')) {
-            $message = 'Invalid payment provided.The possible reasons are:' .
-                'A field of the provided payment was null or with invalid values';
+        if (!is_string($this->value)) {
+            throw new InvalidPropertyValueException("The date need's be a string");
+        }
 
-            throw new HttpResponseException(
-                response()->json([
-                    'message' => $message,
-                ], Response::HTTP_UNPROCESSABLE_ENTITY)
-            );
+        if (empty($this->value)) {
+            throw new InvalidPropertyValueException('The date cannot be empty');
+        }
+
+        $date = DateTime::createFromFormat('Y-m-d', $this->value);
+        if (!$date || $date->format('Y-m-d') !== $this->value) {
+            throw new InvalidPropertyValueException("Invalid date format. Date should be in the format 'YYYY-MM-DD'");
         }
     }
 }
