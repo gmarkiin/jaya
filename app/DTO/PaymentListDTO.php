@@ -3,18 +3,19 @@
 namespace App\DTO;
 
 use App\Domain\Payment\ValueObject\PaymentStatusVO;
+use App\Exceptions\InvalidPropertyValueException;
 use App\ValueObject\DateVO;
-use App\ValueObject\FloatVO;
+use App\ValueObject\TransactionAmountVO;
 use App\ValueObject\IdVO;
-use App\ValueObject\IntegerVO;
 use App\ValueObject\StringVO;
+use App\ValueObject\InstallmentVO;
 use App\ValueObject\UrlVO;
 use stdClass;
 
 class PaymentListDTO
 {
-    public readonly FloatVO $transactionAmount;
-    public readonly IntegerVO $installments;
+    public readonly TransactionAmountVO $transactionAmount;
+    public readonly InstallmentVO $installments;
     public readonly StringVO $token;
     public readonly StringVO $paymentMethodId;
     public readonly StringVO $payerEmail;
@@ -28,12 +29,15 @@ class PaymentListDTO
     public readonly ?DateVO $updatedAt;
     public readonly UrlVO $notificationUrl;
 
+    /**
+     * @throws InvalidPropertyValueException
+     */
     public function __construct(stdClass $data)
     {
         $this->id = new IdVO($data->id);
         $this->status = new PaymentStatusVO($data->status);
-        $this->transactionAmount = new FloatVO($data->transaction_amount);
-        $this->installments = new IntegerVO($data->installments);
+        $this->transactionAmount = new TransactionAmountVO($data->transaction_amount);
+        $this->installments = new InstallmentVO($data->installments);
         $this->token = new StringVO($data->token);
         $this->paymentMethodId = new StringVO($data->payment_method_id);
         $this->payerEntityType = new StringVO($data->payer_entity_type);
