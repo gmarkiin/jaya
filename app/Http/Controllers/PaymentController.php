@@ -57,4 +57,16 @@ class PaymentController extends BaseController
                 ]
             )->setStatusCode(Response::HTTP_ACCEPTED);
     }
+
+    public function cancelPayment(string $id): JsonResponse
+    {
+        (new Payment(new PaymentDb()))->cancelPaymentById($id);
+
+        return response()
+            ->json(
+                [
+                    'status' => PaymentStatusEnum::CANCELED->name
+                ]
+            )->setStatusCode(Response::HTTP_ACCEPTED);
+    }
 }
