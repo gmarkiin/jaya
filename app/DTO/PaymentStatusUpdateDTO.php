@@ -2,9 +2,9 @@
 
 namespace App\DTO;
 
+use App\Domain\Payment\ValueObject\DateVO;
+use App\Domain\Payment\ValueObject\IdVO;
 use App\Domain\Payment\ValueObject\PaymentStatusVO;
-use App\ValueObject\DateVO;
-use App\ValueObject\IdVO;
 
 class PaymentStatusUpdateDTO
 {

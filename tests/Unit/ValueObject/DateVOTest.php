@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\ValueObject;
 
+use App\Domain\Payment\ValueObject\DateVO;
 use App\Exceptions\InvalidPropertyValueException;
-use App\ValueObject\DateVO;
 use Tests\TestCase;
 
 class DateVOTest extends TestCase

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\ValueObject;
+namespace App\Domain\Payment\ValueObject;
 
 use App\Exceptions\InvalidPropertyValueException;
+use Ramsey\Uuid\Uuid;
 
-class InstallmentVO
+class IdVO
 {
     /**
      * @throws InvalidPropertyValueException
@@ -19,12 +20,12 @@ class InstallmentVO
      */
     private function validateValue(): void
     {
-        if (!is_int($this->value)) {
-            throw new InvalidPropertyValueException("The installment need's be a integer");
+        if (!is_string($this->value)) {
+            throw new InvalidPropertyValueException("The ID '$this->value' need's be a string");
         }
 
-        if ($this->value <= 0) {
-            throw new InvalidPropertyValueException('The installment cannot be less than 0');
+        if (!Uuid::isValid($this->value)) {
+            throw new InvalidPropertyValueException("The ID '$this->value' isn't a UUID");
         }
     }
 }

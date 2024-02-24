@@ -3,7 +3,7 @@
 namespace App\Db\Payment;
 
 use App\Domain\Payment\Payment;
-use App\ValueObject\IdVO;
+use App\Domain\Payment\ValueObject\IdVO;
 
 interface PaymentPersistenceInterface
 {

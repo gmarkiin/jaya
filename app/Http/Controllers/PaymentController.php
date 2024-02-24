@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Db\Payment\PaymentDb;
 use App\Domain\Payment\Payment;
+use App\Domain\Payment\ValueObject\DateVO;
+use App\Domain\Payment\ValueObject\IdVO;
 use App\Domain\Payment\ValueObject\PaymentStatusVO;
 use App\DTO\PaymentCreateDTO;
 use App\DTO\PaymentStatusUpdateDTO;
 use App\Enum\PaymentStatusEnum;
 use App\Exceptions\InvalidPropertyValueException;
 use App\Http\Requests\PaymentCreateRequest;
-use App\ValueObject\DateVO;
-use App\ValueObject\IdVO;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Response;

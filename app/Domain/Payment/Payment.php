@@ -3,10 +3,10 @@
 namespace App\Domain\Payment;
 
 use App\Db\Payment\PaymentPersistenceInterface;
+use App\Domain\Payment\ValueObject\IdVO;
 use App\DTO\PaymentCreateDTO;
 use App\DTO\PaymentListDTO;
 use App\DTO\PaymentStatusUpdateDTO;
-use App\ValueObject\IdVO;
 
 class Payment
 {

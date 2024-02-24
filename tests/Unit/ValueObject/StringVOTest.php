@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\ValueObject;
 
+use App\Domain\Payment\ValueObject\StringVO;
 use App\Exceptions\InvalidPropertyValueException;
-use App\ValueObject\StringVO;
 use Tests\TestCase;
 
 class StringVOTest extends TestCase

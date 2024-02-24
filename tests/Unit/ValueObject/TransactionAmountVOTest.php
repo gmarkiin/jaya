@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\ValueObject;
 
+use App\Domain\Payment\ValueObject\TransactionAmountVO;
 use App\Exceptions\InvalidPropertyValueException;
-use App\ValueObject\TransactionAmountVO;
 use Tests\TestCase;
 
 class TransactionAmountVOTest extends TestCase

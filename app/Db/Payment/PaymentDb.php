@@ -3,13 +3,12 @@
 namespace App\Db\Payment;
 
 use App\Domain\Payment\Payment;
+use App\Domain\Payment\ValueObject\IdVO;
 use App\DTO\PaymentListDTO;
-use App\Enum\PaymentStatusEnum;
 use App\Exceptions\BankslipNotFoundException;
 use App\Exceptions\InvalidPropertyValueException;
-use App\Exceptions\PersistenceException;
 use App\Exceptions\PaymentNotFoundException;
-use App\ValueObject\IdVO;
+use App\Exceptions\PersistenceException;
 use Illuminate\Support\Facades\DB;
 
 class PaymentDb implements PaymentPersistenceInterface

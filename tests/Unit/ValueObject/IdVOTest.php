@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\ValueObject;
 
+use App\Domain\Payment\ValueObject\IdVO;
 use App\Exceptions\InvalidPropertyValueException;
-use App\ValueObject\IdVO;
 use Tests\TestCase;
 
 class IdVOTest extends TestCase

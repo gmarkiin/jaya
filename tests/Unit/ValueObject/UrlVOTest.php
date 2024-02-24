@@ -2,9 +2,8 @@
 
 namespace Tests\Unit\ValueObject;
 
+use App\Domain\Payment\ValueObject\UrlVO;
 use App\Exceptions\InvalidPropertyValueException;
-use App\ValueObject\UrlVO;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Tests\TestCase;
 
 class UrlVOTest extends TestCase

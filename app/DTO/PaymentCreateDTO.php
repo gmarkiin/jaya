@@ -1,15 +1,15 @@
 <?php
 namespace App\DTO;
 
+use App\Domain\Payment\ValueObject\DateVO;
+use App\Domain\Payment\ValueObject\IdVO;
+use App\Domain\Payment\ValueObject\InstallmentVO;
 use App\Domain\Payment\ValueObject\PaymentStatusVO;
+use App\Domain\Payment\ValueObject\StringVO;
+use App\Domain\Payment\ValueObject\TransactionAmountVO;
+use App\Domain\Payment\ValueObject\UrlVO;
 use App\Enum\PaymentStatusEnum;
 use App\Exceptions\InvalidPropertyValueException;
-use App\ValueObject\DateVO;
-use App\ValueObject\TransactionAmountVO;
-use App\ValueObject\IdVO;
-use App\ValueObject\StringVO;
-use App\ValueObject\InstallmentVO;
-use App\ValueObject\UrlVO;
 use Ramsey\Uuid\Uuid;
 
 class PaymentCreateDTO
