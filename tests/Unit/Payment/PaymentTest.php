@@ -5,15 +5,19 @@ namespace Payment;
 use App\Db\Payment\PaymentDb;
 use App\Domain\Payment\Payment;
 use App\DTO\PaymentCreateDTO;
+use App\Exceptions\InvalidPropertyValueException;
+use App\Exceptions\PersistenceException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
-use RuntimeException;
 use Tests\TestCase;
 
 class PaymentTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @throws InvalidPropertyValueException
+     */
     public function testPaymentCreateSuccessful()
     {
         $data = [
@@ -52,6 +56,10 @@ class PaymentTest extends TestCase
         ]);
     }
 
+    /**
+     * @throws PersistenceException
+     * @throws InvalidPropertyValueException
+     */
     public function testPaymentCreateFailed()
     {
         DB::shouldReceive('table')->with('payments')->once()->andReturnSelf();
@@ -75,8 +83,8 @@ class PaymentTest extends TestCase
         $payment = new Payment(new PaymentDb());
         $payment->createDTO = $paymentCreateDto;
 
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Failed insert');
+        $this->expectException(PersistenceException::class);
+        $this->expectExceptionMessage('Failed to insert payment');
 
         $payment->create();
     }
