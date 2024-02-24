@@ -43,4 +43,9 @@ class Payment
         return $this->paymentList->getAllProperties();
     }
 
+    public function confirmPaymentById(string $paymentId): void
+    {
+        $this->paymentPersistence->confirmPaymentById($paymentId, $this);
+    }
+
 }
