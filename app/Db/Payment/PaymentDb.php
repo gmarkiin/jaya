@@ -89,7 +89,7 @@ class PaymentDb implements PaymentPersistenceInterface
             ])
             ->where(['id' => $paymentId])
             ->get()
-            ->toArray()[0];
+            ->toArray();
 
         if (empty($record)) {
             throw new HttpResponseException(
@@ -99,7 +99,7 @@ class PaymentDb implements PaymentPersistenceInterface
             );
         }
 
-        $payment->paymentList = new PaymentListDTO((object)$record);
+        $payment->paymentList = new PaymentListDTO((object)$record[0]);
     }
 
     public function confirmPaymentById(string $paymentId, Payment $payment): void
