@@ -48,4 +48,9 @@ class Payment
         $this->paymentPersistence->confirmPaymentById($paymentId, $this);
     }
 
+    public function cancelPaymentById(string $paymentId): void
+    {
+        $this->paymentPersistence->cancelPaymentById($paymentId, $this);
+    }
+
 }
