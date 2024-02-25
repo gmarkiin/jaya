@@ -11,8 +11,9 @@ use App\DTO\PaymentCreateDTO;
 use App\DTO\PaymentStatusUpdateDTO;
 use App\Enum\PaymentStatusEnum;
 use App\Exceptions\InvalidPropertyValueException;
-use App\Http\Requests\PaymentCreateRequest;
+use App\Exceptions\InvalidRequestPayload;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,9 +21,11 @@ class PaymentController extends BaseController
 {
     /**
      * @throws InvalidPropertyValueException
+     * @throws InvalidRequestPayload
      */
-    public function createPayment(PaymentCreateRequest $request): JsonResponse
+    public function createPayment(Request $request): JsonResponse
     {
+        $this->validatePayload($request->toArray());
         $paymentCreateDto = new PaymentCreateDTO($request->toArray());
         $payment = new Payment(new PaymentDb());
         $payment->createDTO = $paymentCreateDto;
@@ -99,5 +102,15 @@ class PaymentController extends BaseController
                     'status' => PaymentStatusEnum::CANCELED->name
                 ]
             )->setStatusCode(Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @throws InvalidRequestPayload
+     */
+    private function validatePayload(array $payload): void
+    {
+        if (empty($payload)) {
+            throw new InvalidRequestPayload();
+        }
     }
 }
