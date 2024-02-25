@@ -39,6 +39,7 @@ class Handler extends ExceptionHandler
                 return response()->json(['message' => $message], $e->getCode());
             case $e instanceof BankslipNotFoundException:
             case $e instanceof PaymentNotFoundException:
+            case $e instanceof InvalidRequestPayload:
                 return response()->json(['message' => $e->getMessage()], $e->getCode());
             default: return parent::render($request, $e);
         }
