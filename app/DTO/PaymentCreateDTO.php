@@ -37,22 +37,22 @@ class PaymentCreateDTO
      */
     public function __construct(array $requestData)
     {
-        $payerData = $requestData['payer'];
-        $payerIdentificationData = $payerData['identification'];
+        $payerData = $requestData['payer'] ?? null;
+        $payerIdentificationData = $payerData['identification'] ?? null;
 
-        $this->transactionAmount = new TransactionAmountVO($requestData['transaction_amount']);
-        $this->installments = new InstallmentVO($requestData['installments']);
-        $this->token = new StringVO($requestData['token']);
-        $this->paymentMethodId = new StringVO($requestData['payment_method_id']);
-        $this->payerEmail = new StringVO($payerData['email']);
+        $this->transactionAmount = new TransactionAmountVO($requestData['transaction_amount'] ?? null);
+        $this->installments = new InstallmentVO($requestData['installments'] ?? null);
+        $this->token = new StringVO($requestData['token'] ?? null);
+        $this->paymentMethodId = new StringVO($requestData['payment_method_id'] ?? null);
+        $this->payerEmail = new StringVO($payerData['email'] ?? null);
 
-        $this->payerIdentificationType = new StringVO($payerIdentificationData['type']);
-        $this->payerIdentificationNumber = new StringVO($payerIdentificationData['number']);
+        $this->payerIdentificationType = new StringVO($payerIdentificationData['type'] ?? null);
+        $this->payerIdentificationNumber = new StringVO($payerIdentificationData['number'] ?? null);
         $this->payerEntityType = new StringVO(self::PAYER_ENTITY_TYPE_DEFAULT);
         $this->payerType = new StringVO(self::PAYER_TYPE_DEFAULT);
 
         $this->id = new IdVO(Uuid::uuid4()->toString());
-        $this->status = new PaymentStatusVO(PaymentStatusEnum::PENDING->value);
+        $this->status = new PaymentStatusVO(PaymentStatusEnum::PENDING->value ?? null);
         $this->createdAt = new DateVO(date('Y-m-d'));
         $this->notificationUrl = new UrlVO(self::NOTIFICATION_URL_DEFAULT);
     }
