@@ -51,3 +51,15 @@ services:
       - 9090
     ports:
       - "8080:80"
+
+  jaya_swagger:
+      container_name: jaya_swagger
+      image: swaggerapi/swagger-ui:latest
+      ports:
+          - "83:8080"
+      volumes:
+          - .:/var/www/app/swagger
+      environment:
+          URL: http://localhost:8080/api/api-docs
+      depends_on:
+          - jaya_nginx
