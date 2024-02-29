@@ -4,7 +4,7 @@ export const CardSecurityDigit = () => {
     return (
         <Stack sx={{marginTop: 2}}>
             <Stack direction={'row'} spacing={202}>
-                <TextField label='Numero do cartao' />
+                <TextField label='CVV' />
             </Stack>
         </Stack>
     )
