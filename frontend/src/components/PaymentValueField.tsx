@@ -1,12 +1,11 @@
-import { FormControl, FilledInput, InputAdornment } from '@mui/material'
+import { Stack, TextField } from '@mui/material'
 
 export const PaymentValueField = () => {
-    return (
-        <FormControl sx={{marginTop: 2}}>
-          <FilledInput
-            id="filled-adornment-amount"
-            startAdornment={<InputAdornment position="start">R$</InputAdornment>}
-          />
-        </FormControl>
-    )
+  return (
+    <Stack sx={{ marginTop: 2 }}>
+      <Stack direction={'row'} spacing={202}>
+        <TextField id='card-number-id' label='Valor do pagamento' />
+      </Stack>
+    </Stack>
+  )
 }

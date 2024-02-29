@@ -10,8 +10,11 @@ import { CardSecurityDigit } from "./components/CardSecurityDigit";
 import { InstallmentsField } from "./components/InstallmentsField";
 import { useState } from "react";
 import { createCardToken } from "@mercadopago/sdk-react/coreMethods";
+import { fetchPaymentMethodsOptions } from "./services/getPaymentMethod"
 
 function App() {
+
+  fetchPaymentMethodsOptions('50314332')
   const [loading, setLoading] = useState(false);
 
   const handlePayment = async () => {
@@ -47,7 +50,6 @@ function App() {
 
       <Grid item xs={8}>
         <Typography variant="h5">Dados do Pagamento</Typography>
-        <PayerEmailField />
         <PaymentValueField />
         <CardNumberField />
         <CardMounthExpirationField />
