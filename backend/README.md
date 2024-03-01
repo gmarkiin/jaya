@@ -19,11 +19,3 @@ Para verificar o coverage de testes do backend execute o seguinte comando:
 Para  executar os testes basta executar o seguinte comando:
 
     docker compose exec --user application jaya_nginx php artisan test
-
-## FRONTEND
-#
-Após isso acesse a pasta frontend e execute o seguinte comando para realizar a build do front
-
-    yarn install && yarn quasar dev --watch
-#
-Para executar os testes unitários também preparei um script a fim de agilizar a execução do comando
